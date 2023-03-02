@@ -8,9 +8,18 @@
 	</head>
 	<style>
 		svg { border: 1px solid #000000; }
+		div.wall {
+			height: 40px; width: 100px; background-color: aqua;
+			margin-bottom: 20px;
+		}
+        div.partition {
+            height: 40px; width: 100px; background-color: aqua;
+        }
+		div.clear { position: absolute; right: 100px; top: 100px; height: 40px; width: 150px; line-height: 40px; text-align: center; background-color: aliceblue; }
 	</style>
 	<body>
 		<svg id="svgCanvas" width="800" height="500"></svg>
+		<div class="clear">CLEAR</div>
 		<div class="wall">Стенка</div>
 		<div class="partition">ПЕРЕГОРОДКА</div>
 	</body>

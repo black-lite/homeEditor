@@ -1,57 +1,118 @@
-$(function () {
+document.addEventListener('DOMContentLoaded', function()
+{
 	let svgPath;
 
+	let startCoord = {}
+	let isEnd = false;
+
+	const radiusX = 30;
+	const radiusY = 30;
+
+	let strokeWidth = 20;
+
 	let svg = document.querySelector('#svgCanvas');
+
 	let _wall = document.querySelector('div.wall');
 	let _partition = document.querySelector('div.partition');
+
+	let clear = document.querySelector('div.clear');
+
 	_wall.addEventListener('click', wall);
 	_partition.addEventListener('click', partition);
-	function wall() { if (svg) svgPath.setAttribute("stroke-width", "20"); }
-	function partition() { if (svg) svgPath.setAttribute("stroke-width", "10");}
+	clear.addEventListener('click', clearSvg);
 
-	let lastCoord;
-	let isMove = false;
-	svg.addEventListener('mousedown',  start);
+	function wall() { if (svg) strokeWidth = 20; }
+	function partition() { if (svg) strokeWidth = 10 }
+	function clearSvg() { if (svg) { svg.innerHTML = ''; lastCoord = {}; } }
+
+	let lastCoord = {};
+	svg.addEventListener('mousedown', start);
 	svg.addEventListener("mousemove", _continue);
 	svg.addEventListener("mouseup", end);
 
 	function start(event)
 	{
-		isMove = true;
-		svgPath = createSvgElement("path");
-		svgPath.setAttribute("fill", "none");
-		svgPath.setAttribute("shape-rendering", "geometricPrecision");
-		svgPath.setAttribute("stroke-linejoin", "miter");
-		svgPath.setAttribute("stroke", "#000000");
-		svgPath.setAttribute("stroke-width", "20");
-		svgPath.setAttribute("d", "M" + event.clientX + "," + event.clientY);
-		svg.append(svgPath);
+		if (isEnd)
+		{
+			let pathData = svgPath.getAttribute("d");
+			let M = pathData.slice(0, 8);
+			svgPath.setAttribute("d", M + ' L' + startCoord.x0 + "," + startCoord.y0);
+			svgPath = null;
+			startCoord = {};
+			lastCoord = {};
+		}
+		else
+		{
+			if (JSON.stringify(lastCoord) === '{}' && !svgPath)
+			{
+				svgPath = createSvgElement("path");
+				svgPath.setAttribute("fill", "none");
+				svgPath.setAttribute("shape-rendering", "geometricPrecision");
+				svgPath.setAttribute("stroke-linejoin", "miter");
+				svgPath.setAttribute("stroke", "#000000");
+				svgPath.setAttribute("stroke-width", strokeWidth);
+				svgPath.setAttribute("d", "M" + event.clientX + "," + event.clientY);
+				svg.append(svgPath);
+
+				startCoord = {
+					x0: event.clientX, x1: event.clientX + radiusX, x2: event.clientX - radiusX,
+					y0: event.clientY, y1: event.clientY + radiusY, y2: event.clientY - radiusY,
+				};
+			}
+		}
 	}
 
 	function _continue(event)
 	{
-		if (isMove)
+		isEnd = (event.clientX > startCoord.x2 && event.clientX < startCoord.x1) && (event.clientY > startCoord.y2 && event.clientY < startCoord.y1);
+
+		// <circle cx="50" cy="50" r="50" />
+		if ((event.clientX > startCoord.x2 && event.clientX < startCoord.x1) && (event.clientY > startCoord.y2 && event.clientY < startCoord.y1))
 		{
-			if (!lastCoord)
+			isEnd = true;
+			let circle = createSvgElement("circle");
+			circle.setAttribute("cx", startCoord.x0);
+			circle.setAttribute("cy", startCoord.y0);
+			circle.setAttribute("r", 5);
+			circle.setAttribute("fill", 'red');
+			svg.append(circle);
+		}
+		else
+		{
+			isEnd = false;
+		}
+
+		if (JSON.stringify(lastCoord) === '{}')
+		{
+			if (svgPath)
 			{
-				if (svgPath)
-				{
-					let pathData = svgPath.getAttribute("d");
-					let  M= pathData.slice(0, 8);
-					svgPath.setAttribute("d", M + ' L' + event.clientX + "," + event.clientY);
-				}
-			}
-			else {
-				let M = ' M' + lastCoord.x + ',' + lastCoord.y;
 				let pathData = svgPath.getAttribute("d");
-				svgPath.setAttribute("d", pathData + M +' L' + event.clientX + "," + event.clientY);
+				// M147,117 L688,125 L688,125Z
+				let M = pathData.slice(0, 8);
+				svgPath.setAttribute("d", M + ' L' + event.clientX + "," + event.clientY);
 			}
+		}
+		else
+		{
+			if (!svgPath)
+			{
+				svgPath = createSvgElement("path");
+				svgPath.setAttribute("fill", "none");
+				svgPath.setAttribute("shape-rendering", "geometricPrecision");
+				svgPath.setAttribute("stroke-linejoin", "miter");
+				svgPath.setAttribute("stroke", "#000000");
+				svgPath.setAttribute("stroke-width", strokeWidth);
+				// svgPath.setAttribute("d", "M" + event.clientX + "," + event.clientY);
+				svg.append(svgPath);
+			}
+
+			let M = 'M' + lastCoord.x + ',' + lastCoord.y;
+			svgPath.setAttribute("d", M +' L' + event.clientX + "," + event.clientY);
 		}
 	}
 
 	function end(event)
 	{
-		isMove = false;
 		if (svgPath) {
 			let pathData = svgPath.getAttribute("d");
 			pathData = pathData + " L" + event.clientX + "," + event.clientY +'Z';
