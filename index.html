@@ -4,21 +4,125 @@
 		<meta charset="UTF-8">
 		<script type="text/javascript" src="../jquery-3.6.0.min.js"></script>
 		<script type="text/javascript" src="script.js"></script>
+		<link rel="stylesheet" href="style.css">
 		<title>Title</title>
 	</head>
 	<style>
-		svg { border: 1px solid #000000; }
-		div.wall {
-			height: 40px; width: 100px; background-color: aqua;
-			margin-bottom: 20px;
-		}
-        div.partition { height: 40px; width: 100px; background-color: aqua; }
-		div.clear { position: absolute; right: 0; top: 0; height: 40px; width: 150px; line-height: 40px; text-align: center; background-color: aliceblue; }
+        svg {
+            border: 1px solid #000000;
+        }
+
+        div.wall {
+            height: 40px;
+            width: 100px;
+            background-color: aqua;
+            margin-bottom: 20px;
+        }
+
+        div.partition {
+            height: 40px;
+            width: 100px;
+            background-color: aqua;
+        }
+
+        div.clear {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 40px;
+            width: 150px;
+            line-height: 40px;
+            text-align: center;
+            background-color: aliceblue;
+        }
+
+        div.container {
+            display: flex;
+            flex-direction: column;
+        }
+        div.container > div.head div.title {
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        div.container > div.head div.buttons_floor {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        div.container > div.head div.buttons_floor > div {
+            height: 40px;
+            width: 200px;
+            padding: 9px 14px;
+            background-color: #00C2FF;
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 22px;
+            color: white;
+        }
+        div.container > div.content {
+            display: flex;
+            gap: 12px;
+        }
+        div.container > div.content div:nth-child(1) {
+            width: 300px;
+            height: 700px;
+        }
+        div.container > div.content div:nth-child(2) {
+            width: 1000px;
+            height: 700px;
+        }
+        div.container > div.content div:nth-child(2) div.menu {
+            background-color: #00C2FF;
+        }
+        div.container > div.content div:nth-child(3) {
+            width: 300px;
+            height: 700px;
+        }
 	</style>
+
 	<body>
-		<svg id="svgCanvas" width="1000" height="700"></svg>
-		<div class="clear">CLEAR</div>
-		<div class="wall">Стенка</div>
-		<div class="partition">ПЕРЕГОРОДКА</div>
+		<div class="container">
+			<div class="head">
+				<div class="title">Выберите покрытие вашего пола</div>
+				<div class="buttons_floor">
+					<div>Линолиум</div>
+					<div>Паркет, ламинат</div>
+					<div>Плитка</div>
+					<div>Бетон</div>
+				</div>
+			</div>
+			<div class="content">
+				<div>
+					<h2>Инструкция</h2>
+					<ol>
+						<li>Выберите покрытие вашего пола</li>
+						<li>Под кнопками будет выведен нужный тип теплового пола. Слева выберете подходящий тип</li>
+						<li> Нарисуйте ваше помещение. Сэкономьте! Отделите площадь, которую можно не оттеплять (например, площадь кухонного гарнетура)</li>
+						<li>Слева выберете блок подходящего размера и переместите их в нарисованную вами площадь. Блок теплого пола должен полностью входить в площадь нарисованного помещения</li>
+					</ol>
+				</div>
+				<div>
+					<div class="menu">
+						<span>Меню</span>
+						<span></span>
+					</div>
+					<svg id="svgCanvas" width="1000" height="700"></svg>
+				</div>
+				<div>
+					<div class="type_floor">
+						<span>light</span>
+						<span>hot</span>
+						<span>gold</span>
+						<span>medium</span>
+						<span>мебель</span>
+					</div>
+					<div class="view_type_floor"></div>
+				</div>
+			</div>
+		</div>
+<!--		<div class="clear">CLEAR</div>-->
+<!--		<div class="wall">Стенка</div>-->
+<!--		<div class="partition">ПЕРЕГОРОДКА</div>-->
 	</body>
 </html>

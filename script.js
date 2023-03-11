@@ -28,14 +28,14 @@ document.addEventListener('DOMContentLoaded', function()
 	const radiusY = 30;
 	let strokeWidth = 20;
 
-	let svg = document.querySelector('#svgCanvas');
-	let _wall = document.querySelector('div.wall');
-	let _partition = document.querySelector('div.partition');
-	let clear = document.querySelector('div.clear');
+	let svg 		= document.querySelector('#svgCanvas');
+	let _wall 		= document.querySelector('div.wall');
+	let _partition 	= document.querySelector('div.partition');
+	let clear 		= document.querySelector('div.clear');
 
-	_wall.addEventListener('click', wall);
-	_partition.addEventListener('click', partition);
-	clear.addEventListener('click', clearSvg);
+	// _wall.addEventListener('click', wall);
+	// _partition.addEventListener('click', partition);
+	// clear.addEventListener('click', clearSvg);
 
 	function wall() { if (svg) { svgPath = null; strokeWidth = 20; mode = MODE_WALL; } }
 	function partition() { if (svg) { svgPath = null; strokeWidth = 10; mode = MODE_PARTITION; } }

@@ -1,0 +1,40 @@
+svg { border: 1px solid #000000; }
+div.wall {
+	height: 40px; width: 100px; background-color: aqua;
+	margin-bottom: 20px;
+}
+div.partition { height: 40px; width: 100px; background-color: aqua; }
+div.clear { position: absolute; right: 0; top: 0; height: 40px; width: 150px; line-height: 40px; text-align: center; background-color: aliceblue; }
+
+$main: #00C2FF;
+
+div.container {
+	display: flex; flex-direction: column;
+
+	> div.head {
+		div.title { text-transform: uppercase; text-align: center; margin-bottom: 32px; }
+		div.buttons_floor {
+			display: flex; justify-content: center; gap: 20px;
+			> div {
+				height: 40px; width: 200px; padding: 9px 14px; background-color: $main;
+				box-sizing: border-box;text-align: center; line-height: 22px; color: white;
+			}
+		}
+	}
+
+	> div.content {
+		display: flex; gap: 12px;
+		div:nth-child(1) {
+			width: 300px; height: 700px;
+		}
+
+		div:nth-child(2) {
+			width: 1000px; height: 700px;
+			div.menu { background-color: $main }
+		}
+
+		div:nth-child(3) {
+			width: 300px; height: 700px;
+		}
+	}
+}
